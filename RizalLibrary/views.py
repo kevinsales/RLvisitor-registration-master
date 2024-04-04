@@ -3,6 +3,8 @@ from .models import *
 from django.contrib import messages
 from .forms import *
 
+# TESTING if my commit works - kevin 
+
 # import qrcode (for generating qrcode)
 import qrcode
 
