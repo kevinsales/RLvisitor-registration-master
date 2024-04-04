@@ -1,0 +1,91 @@
+{% extends 'RizalLibrary/empty_visitors_input.html' %} {% block content %}
+<div
+  class="container rounded-3 p-3 mb-3"
+  style="background-color: rgb(243 243 243); width: 90%"
+>
+  <div class="row">
+    <div class="col-12">
+      <h3 class="mb-4">Visitors</h3>
+      <a class="btn btn-secondary" href="{% url 'qrtest' %}"
+        >Click here to open video (webcam) (it will take around 20-30 seconds to
+        open). video will close after qrcode detected. FOR DEV: check the
+        command prompt, it will print the visitor ID number</a
+      >
+      <a class="btn btn-secondary" href="{% url 'visitors' %}">refersh</a>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-12">
+      <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Visitor ID</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Middle Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">ID Number</th>
+            <th scope="col">Affiliation</th>
+            <th scope="col">Visitor Type</th>
+            <th scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for v in visitors %}
+          <tr>
+            <td>{{ v.visitorID }}</td>
+            <td>{{ v.lastName }}</td>
+            <td>{{ v.firstName }}</td>
+            <td>{{ v.middleName }}</td>
+            <td>{{ v.visitorEmail }}</td>
+            <td>{{ v.idNumber }}</td>
+            <td>{{ v.affiliation }}</td>
+            <td>{{ v.visitorType }}</td>
+            <td>
+              <form method="post">
+                {% csrf_token %}
+                <input
+                  type="hidden"
+                  name="visitorID"
+                  value="{{ v.visitorID }}"
+                />
+                <button type="submit" class="btn btn-primary">
+                  Send Email to {{ v.lastName }}
+                </button>
+                <td>{{form.visitorID}}</td>
+              </form>
+            </td>
+          </tr>
+
+          {% endfor %}
+
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Partner Libraries ID</th>
+              <th scope="col">Librarian Name</th>
+              <th scope="col">Requestor Name</th>
+              <th scope="col">Requestor Email</th>
+              <th scope="col">Representative Name</th>
+              <th scope="col">RepresentativeEmail</th>
+              <th scope="col">RepresentativeID</th>
+              <!-- <th scope="col">Options</th> -->
+            </tr>
+          </thead>
+
+          {% for pl in PartnerLibraries %}
+          <tr>
+            <td>{{ pl.plVisitorID }}</td>
+            <td>{{ pl.librarianName }}</td>
+            <td>{{ pl.requestorName }}</td>
+            <td>{{ pl.requestorEmail }}</td>
+            <td>{{ pl.representativeName }}</td>
+            <td>{{ pl.representativeEmail }}</td>
+            <td>{{ pl.representativeID }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'RizalLibrary/empty_visitors_input.html' %} {% block content %}
+
+<!--                                        forms                                  -->
+{% load static %}
+<form method="POST">
+  {% csrf_token %}
+
+  <div
+    class="container rounded-3 p-3 mb-3"
+    style="background-color: rgb(243 243 243); width: 90%"
+  >
+    <!-- vertical divider / form color-->
+    <div class="border-start border-end border-3 p-4">
+      <!-- Headings -->
+      <p class="fs-2 fw-semibold mb-0">Ateneo Rizal Library Form</p>
+      <p class="fs-5 fw-normal fst-italic">
+        Kindly answer all the required fields. (All fields are required unless
+        stated)
+      </p>
+
+      <!-- horizontal divider -->
+      <div class="border-bottom border-3 mb-3 rounded"></div>
+
+      <!-- input padding -->
+      <div class="offset-md-2">
+        <!-- Text input-->
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Last Name</p>
+          <div class="col-md-9">{{ form.lastName }}</div>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">First Name</p>
+          <div class="col-md-9">{{ form.firstName }}</div>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Middle Name (optional)</p>
+          <div class="col-md-9">{{ form.middleName }}</div>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Email Address</p>
+          <div class="col-md-9">{{ form.visitorEmail }}</div>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Valid ID Number</p>
+          <div class="col-md-9">{{ form.idNumber }}</div>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Current Affiliation</p>
+          <div class="col-md-9">{{ form.affiliation }}</div>
+        </div>
+        <div>
+          <div class="col-md-4">
+            <p class="fs-5 fw-normal">Visitor Type</p>
+            {{ form.visitorType }}
+          </div>
+        </div>
+      </div>
+      <!-- back and submit button -->
+      <div>
+        <a
+          type="button"
+          class="btn btn-outline-warning px-4"
+          href="{% url 'visitor_start_page' %}"
+        >
+          Back
+        </a>
+        <button
+          type="submit"
+          class="btn btn-warning float-end submitbackbtn text-white"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

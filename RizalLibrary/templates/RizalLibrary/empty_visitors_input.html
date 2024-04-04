@@ -1,0 +1,165 @@
+{% load static %}
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Rizal Library Request Form</title>
+    <!-- bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
+
+    <!-- Latest compiled and minified CSS  -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css"
+    />
+    <!-- bootstrap icon -->
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    /> -->
+
+    <!-- bootstrap-datepicker -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+    />
+    <!-- font awesome (for icons) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <!-- custom css -->
+    <style>
+      /* when you select the input, it will diplay this color as shadow */
+      .form-control:focus,
+      .form-select:focus {
+        border-color: #d0ac44;
+        box-shadow: 0 0 0 0.2rem rgba(208, 172, 68, 0.5);
+      }
+
+      /* when you hover item from select, it will diplay this color */
+      .dropdown-menu > li > a:hover,
+      .dropdown-menu > li > a:focus {
+        text-decoration: none;
+        color: #ffffff;
+        background-color: #d0ac44;
+      }
+
+      /* color for submit button*/
+      input[type="radio"]:checked {
+        background-color: #d0ac44;
+        border-color: white;
+      }
+      /* style for datepicker */
+      #datepicker > span:hover {
+        cursor: pointer;
+      }
+      .datepicker td,
+      th {
+        text-align: center;
+        padding: 8px 10px;
+        font-size: 14px;
+      }
+
+      .fa {
+        color: #d0ac44;
+      }
+    </style>
+  </head>
+
+  <body style="background-color: rgba(0, 38, 77, 255)" onload="realtimeClock()">
+    <nav
+      class="navbar navbar-dark bg-custom p-4 mb-4"
+      style="background-color: #072e57"
+    >
+      <div class="container-fluid">
+        <div style="display: flex; align-items: center">
+          <img
+            src="{% static 'images/library.jpg' %}"
+            alt=""
+            width="72"
+            height="57"
+          />
+          <p class="text-white fs-1 fw-bold mb-0 ps-3">
+            Ateneo Rizal Library Form
+          </p>
+        </div>
+        <div style="display: flex; align-items: center">
+          <img
+            src="{% static 'images/ateneo.jpg' %}"
+            alt=""
+            width="72"
+            height="57"
+            class="d-none d-lg-block"
+          />
+          <span class="text-white fs-1 fw-bold d-none d-lg-block ps-3">
+            <div id="clock"></div>
+          </span>
+        </div>
+      </div>
+    </nav>
+
+    {% block content %} {% endblock %}
+
+    <!-- jquery -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.1.min.js"
+      integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+      crossorigin="anonymous"
+    ></script>
+    <!-- for showing bootstrap-datepicker -->
+    <script type="text/javascript">
+      var date = new Date();
+      date.setDate(date.getDate());
+      $(function () {
+        $("#datepicker").datepicker({
+          multidate: true,
+          startDate: date,
+        });
+      });
+    </script>
+    <!-- bootstrap -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+      crossorigin="anonymous"
+    ></script>
+    <!-- for customizing select form -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/i18n/defaults-*.min.js"></script> -->
+
+    <!-- for using bootstrap-datepicker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- for showing the current time -->
+    <script>
+      function realtimeClock() {
+        var rtClock = new Date();
+        var hours = rtClock.getHours();
+        var minutes = rtClock.getMinutes();
+        var seconds = rtClock.getSeconds();
+
+        var amPm = hours < 12 ? "AM" : "PM";
+        hours = hours > 12 ? hours - 12 : hours;
+
+        hours = ("0" + hours).slice(-2);
+        minutes = ("0" + minutes).slice(-2);
+        seconds = ("0" + seconds).slice(-2);
+
+        document.getElementById("clock").innerHTML =
+          hours + " : " + minutes + " : " + seconds + " " + amPm;
+
+        var t = setTimeout(realtimeClock, 500);
+      }
+    </script>
+  </body>
+</html>

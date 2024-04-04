@@ -1,0 +1,103 @@
+{% extends 'RizalLibrary/empty_visitors_input.html' %} {% block content %}
+<!--                                        forms                                  -->
+<div
+  class="container rounded-3 p-3 mb-3"
+  style="background-color: rgb(243 243 243); width: 90%"
+>
+  <!-- vertical divider / form color-->
+  <div class="border-start border-end border-3 p-4">
+    <!-- Headings -->
+    <p class="fs-5 fw-normal">
+      Please submit this form at least <strong>2 days</strong> before your entry
+      date to give ample time for the approval process. Submission of this form
+      does not automatically guarantee entry. Please wait for notification of
+      approval via email before attempting to enter the campus.
+
+      <br />
+    </p>
+
+    <p class="fs-5 fw-normal">
+      This request form may be used by alumni, partner libraries,
+      vendors/suppliers, non-enrolled students, and researchers who want to
+      enter the Rizal Library for different purposes. Alumni and partner
+      libraries may also use this form to borrow/return books and to avail of
+      RL's digitization service.
+    </p>
+    <br />
+    <p class="fs-5 fw-normal">
+      If you wish to make a request,
+      <strong>please read the notices below,</strong> and provide the required
+      information.
+    </p>
+    <!-- horizontal divider -->
+    <div class="border-bottom border-3 mb-3 rounded"></div>
+    <p class="fs-5 fw-normal">
+      <strong>RIZAL LIBRARY NOTICE:</strong> Due to financial and human resource
+      limitations, as well as the unpredictable timing of requests, the Rizal
+      Library cannot promise to provide requested materials by a certain date or
+      time. An email confirmation regarding your request will be sent. If you
+      have any questions kindly email
+      <u>ucirculation.rl.ls@ateneo.edu</u>
+    </p>
+    <p class="fs-5 fw-normal">
+      <strong>PROPERTY NOTICE:</strong> In accordance with the Intellectual
+      Property Code of the Philippines, the Ateneo Intellectual Property Policy
+      (<a
+        href="https://www.aipo.ateneo.edu/ip-policy"
+        target="_blank"
+        rel="noreferrer noopener"
+        class="fs-5 fw-normal"
+        style="display: inline"
+        >Ateneo IP-Policy</a
+      >), and the guidelines issued by the Ateneo Intellectual Property Office
+      (<a
+        href="https://www.aipo.ateneo.edu/copyright-guidelines"
+        target="_blank"
+        rel="noreferrer noopener"
+        class="fs-5 fw-normal"
+        style="display: inline"
+        >Ateneo Copyright Guidelines</a
+      >), the Rizal Library recognizes the rights of creators and authors of all
+      literary and artistic works, and affirms that it is authorized, under
+      certain conditions, to reproduce such works for classroom use,
+      scholarship, research, and similar purposes.
+    </p>
+    <p class="fs-5 fw-normal">
+      <strong>PRIVACY NOTICE:</strong> Data collected through this form will be
+      used only for the purpose of validating your eligibility to submit
+      requests related to entering the campus, borrowing/returning books,
+      digitization, and other RL services. The Rizal Library will not use your
+      personal data for any other purposes. To read the privacy policies of the
+      Ateneo de Manila University for its personnel and students, please click
+      here:
+      <a
+        href="http://ateneo.edu/udpo/ADMU-Privacy-Policies"
+        target="_blank"
+        rel="noreferrer noopener"
+        class="fs-5 fw-normal"
+        style="display: inline"
+        >Ateneo Privacy Policies</a
+      >
+    </p>
+
+    <!-- back and submit button -->
+    <div class="d-flex justify-content-between pt-4">
+      <a
+        type="button"
+        class="btn btn-outline-warning"
+        href="{% url 'event_upload' %}"
+      >
+        Register for an event
+      </a>
+      <a
+        type="button"
+        class="btn btn-warning submitbackbtn text-white"
+        href="{% url 'upload_visitor_info' %}"
+      >
+        Proceed
+      </a>
+    </div>
+  </div>
+
+  {% endblock %}
+</div>
