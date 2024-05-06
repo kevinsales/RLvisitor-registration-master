@@ -1,0 +1,327 @@
+{% extends 'RizalLibrary/empty_visitors_input.html' %} {% block content %}
+
+<form method="POST">
+  {% csrf_token %}
+
+  <div
+    class="container rounded-3 p-3 mb-3"
+    style="background-color: rgb(243 243 243); width: 90%"
+  >
+    <!-- vertical divider / form color -->
+    <div class="border-start border-end border-3 p-4">
+      <!-- Headings -->
+      <p class="fs-2 fw-semibold mb-0">Activities</p>
+      <p class="fs-5 fw-normal fst-italic">
+        Kindly answer all the required fields. (All fields are required unless
+        stated)
+      </p>
+
+      <!-- horizontal divider -->
+      <div class="border-bottom border-3 mb-3 rounded"></div>
+
+      <!-- input padding -->
+      <div class="offset-md-2">
+        <!-- Text input -->
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Book Request:</p>
+          <!-- book request -->
+          <div class="card">
+            <table class="table">
+              <thead>
+                <thead>
+                  <tr>
+                    <th scope="col" class="text-start">
+                      <i
+                        class="bi bi-plus-circle-fill"
+                        onclick="addRow()"
+                        style="
+                          font-size: 26px;
+                          color: #d0ac44;
+                          transition: color 0.3s;
+                        "
+                        onmouseover="this.style.color='rgba(208, 172, 68, 0.5)'"
+                        onmouseout="this.style.color='#d0ac44'"
+                      ></i>
+                    </th>
+                    <th scope="col" class="text-start fs-6">Purpose</th>
+                    <th scope="col" class="text-start fs-6">Book Title</th>
+                    <th scope="col" class="text-start fs-6">Start Page</th>
+                    <th scope="col" class="text-start fs-6">End Page</th>
+                  </tr>
+                </thead>
+              </thead>
+              <tbody id="tableBody">
+                <tr>
+                  <th scope="row" width="2%"></th>
+                  <td width="12%">
+                    <select
+                      class="selectpicker bg-white border border-1 rounded mb-4"
+                      title="select purpose"
+                      data-width="100%"
+                      name="purpose0"
+                    >
+                      <option>Borrow</option>
+                      <option>Scan/Digitalize</option>
+                      <option>Photocopy</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Type Here"
+                      name="bookTitle0"
+                    />
+                  </td>
+                  <td width="12%">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Type Here"
+                      name="startPage0"
+                    />
+                  </td>
+                  <td width="12%">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Type Here"
+                      name="endPage0"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <i>maximum of 3 books can be added</i>
+          <!-- end book request -->
+        </div>
+
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Date of Visit/s:</p>
+          <div class="row">
+            <div class="col-md-4">
+              <div
+                id="datepicker"
+                class="input-group date"
+                data-date-format="mm-dd-yyyy"
+              >
+                <input class="form-control" type="text" name="date" readonly />
+                <span
+                  class="input-group-text bg-white d-block input-group-addon"
+                >
+                  <i class="fa fa-calendar"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <i>date/s to visit (can select multiple date for multiple visits)</i>
+        </div>
+
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Location to Visit:</p>
+          <!-- make a form with javascript (it doesn't have to be connected to django) -->
+          <div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="visitLocation"
+                id="nrl"
+                value="0"
+                checked
+              />
+              <label class="form-check-label" for="nrl"
+                >New Rizal Library
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="visitLocation"
+                id="sp"
+                value="1"
+              />
+              <label class="form-check-label" for="sp"
+                >Special Collections (Old Rizal Library)
+              </label>
+            </div>
+          </div>
+
+          <p class="fs-5 fw-normal">
+            Do you wish to visit other locations on your date of visit?
+          </p>
+          <!-- make a form with javascript (it doesn't have to be connected to django) -->
+          <div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="visitOtherLocation"
+                id="yes"
+                value="Yes"
+              />
+              <label class="form-check-label" for="yes"> Yes </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="visitOtherLocation"
+                id="no"
+                value="No"
+                checked
+              />
+              <label class="form-check-label" for="no"> No </label>
+            </div>
+          </div>
+          <div class="col-md-9"></div>
+        </div>
+        <!-- for multi-inputs -->
+        <!-- <div class="row">
+          <div class="mb-4 col-md-4">
+            <div class="mb-4">
+              <p class="fs-5 fw-normal">If Yes, Choose a location</p>
+              <div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="chooseLocation"
+                    id="location1"
+                    checked
+                  />
+                  <label class="form-check-label" for="location1">
+                    New Rizal Library
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="chooseLocation"
+                    id="location2"
+                  />
+                  <label class="form-check-label" for="location2">
+                    Special Collections (Old Rizal Library)
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-4 col-md-4 offset-md-1">
+            <p class="fs-5 fw-normal">Section to visit:</p>
+            <div class="col-md-9">
+              <select
+                class="selectpicker bg-white border border-1 rounded mb-4"
+                title="select visitor type"
+                data-width="100%"
+              >
+                <option>1st Floor</option>
+                <option>2nd Floor</option>
+                <option>3rd Floor</option>
+                <option>4th Floor</option>
+                <option>5th Floor</option>
+              </select>
+            </div>
+          </div>
+        </div> -->
+        <!-- end  multi-inputs row -->
+      </div>
+      <!-- back and submit button -->
+      <div>
+        <a
+          type="button"
+          class="btn btn-outline-warning px-4"
+          href="{% url 'upload_visitor_info' %}"
+        >
+          Back
+        </a>
+        <button
+          type="submit"
+          class="btn btn-warning float-end submitbackbtn text-white"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock %} {% block javascript %}
+
+<script type="text/javascript">
+  var date = new Date();
+  date.setDate(date.getDate());
+  $(function () {
+    $("#datepicker").datepicker({
+      multidate: true,
+      startDate: date,
+    });
+  });
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script>
+  function addRow() {
+    $(document).ready(function () {
+      $(".selectpicker").selectpicker();
+    });
+    var table = document.getElementById("tableBody");
+    var rowCount = table.rows.length;
+    if (rowCount == 3) {
+      return;
+    }
+    var row = table.insertRow(rowCount);
+    var cell1 = row.insertCell(0);
+    var element1 = document.createElement("text");
+    element1.type = "text";
+    cell1.appendChild(element1);
+
+    var cell2 = row.insertCell(1);
+    var element2 = document.createElement("select");
+    element2.className = "selectpicker bg-white border border-1 rounded mb-4";
+    element2.title = "select purpose";
+    element2.name = "purpose" + rowCount;
+    element2.setAttribute("data-width", "100%");
+    var option1 = document.createElement("option");
+    option1.text = "Borrow";
+    element2.add(option1);
+    var option2 = document.createElement("option");
+    option2.text = "Scan/Digitalize";
+    element2.add(option2);
+    var option3 = document.createElement("option");
+    option3.text = "Photocopy";
+    element2.add(option3);
+    cell2.appendChild(element2);
+
+    var cell3 = row.insertCell(2);
+    var element3 = document.createElement("input");
+    element3.type = "text";
+    element3.placeholder = "Type Here";
+    element3.className = "form-control";
+    element3.name = "bookTitle" + rowCount;
+    cell3.appendChild(element3);
+
+    var cell4 = row.insertCell(3);
+    var element4 = document.createElement("input");
+    element4.type = "text";
+    element4.placeholder = "Type Here";
+    element4.className = "form-control";
+    element4.name = "startPage" + rowCount;
+    cell4.appendChild(element4);
+
+    var cell5 = row.insertCell(4);
+    var element5 = document.createElement("input");
+    element5.type = "text";
+    element5.placeholder = "Type Here";
+    element5.className = "form-control";
+    element5.name = "endPage" + rowCount;
+    cell5.appendChild(element5);
+  }
+</script>
+<!-- jquery -->
+<!-- Latest compiled and minified CSS -->
+
+{% endblock %}

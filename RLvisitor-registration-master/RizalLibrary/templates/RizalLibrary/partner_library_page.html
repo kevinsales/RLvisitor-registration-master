@@ -1,0 +1,72 @@
+{% extends 'RizalLibrary/empty_visitors_input.html' %} {% block content %}
+
+<form method="POST">
+  {% csrf_token %}
+
+  <div
+    class="container rounded-3 p-3 mb-3"
+    style="background-color: rgb(243 243 243); width: 90%"
+  >
+    <!-- <h2>
+      {{ request.session.VisitorID }} Just for dev purpose - current visitor ID
+    </h2> -->
+    <!-- vertical divider / form color-->
+    <div class="border-start border-end border-3 p-4">
+      <!-- Headings -->
+      <p class="fs-2 fw-semibold mb-0">Partner Library</p>
+      <p class="fs-5 fw-normal fst-italic">
+        Kindly answer all the required fields. (All fields are required unless
+        stated)
+      </p>
+
+      <!-- horizontal divider -->
+      <div class="border-bottom border-3 mb-3 rounded"></div>
+
+      <!-- input padding -->
+      <div class="offset-md-2">
+        <!-- Text input-->
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Librarian Name:</p>
+          <div class="col-md-9">{{ form.librarianName }}</div>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Requestor Name:</p>
+          <div class="col-md-9">{{ form.requestorName }}</div>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Requestor Email:</p>
+          <div class="col-md-9">{{ form.requestorEmail }}</div>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Representative Name (optional):</p>
+          <div class="col-md-9">{{ form.representativeName }}</div>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Representative Email (optional):</p>
+          <div class="col-md-9">{{ form.representativeEmail }}</div>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Representative ID (optional):</p>
+          <div class="col-md-9">{{ form.representativeID }}</div>
+        </div>
+      </div>
+      <!-- back and submit button -->
+      <div>
+        <a
+          type="button"
+          class="btn btn-outline-warning px-4"
+          href="{% url 'upload_visitor_info' %}"
+        >
+          Back
+        </a>
+        <button
+          type="submit"
+          class="btn btn-warning float-end submitbackbtn text-white"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

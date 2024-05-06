@@ -1,0 +1,946 @@
+{% extends 'RizalLibrary/empty_librarian.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  {% block content %}
+  <head>
+    <title>Requests Status</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body,
+      h1,
+      h2,
+      h3,
+      p,
+      label,
+      select,
+      option,
+      button,
+      table {
+        font-family: "Montserrat", sans-serif;
+      }
+
+      .header {
+        position: relative; /* Establish a positioning context */
+        padding-bottom: 10px; /* Give some space for the line */
+        font-size: 50px; /* header text size */
+        color: white;
+        border-bottom: 0.8px solid #99a9b9;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header::after {
+        content: ""; /* The content is empty for purely decorative elements */
+        position: absolute; /* Position absolutely within the .header */
+        left: 0; /* Align to the far left */
+        right: 0; /* Align to the far right */
+        bottom: 0; /* Place at the bottom of the .header */
+        height: 0.7px; /* Thickness of the line */
+        background-color: #99a9b9; /* Color of the line */
+        z-index: -1; /* Position under the text */
+      }
+
+      .header .btn {
+        font-size: 40px; /* icon size */
+        color: #cfced2;
+        margin-left: 1px; /* space between icons */
+        padding-left: 0%;
+      }
+
+      #time-display {
+        margin-left: 10px; /* space after the last icon */
+      }
+
+      .icon-hover:hover {
+        color: white;
+      }
+
+      .bi:hover {
+        color: white; /* This will change the color to white on hover */
+      }
+
+      .table {
+        background-color: #fff;
+        margin-top: 10px;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 1px;
+        overflow: hidden;
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+
+      .table thead {
+        background-color: #bd9609;
+        color: white;
+        font-weight: bold;
+        text-align: left;
+        border-top-left-radius: 20px; /* Rounded corners for the thead */
+        border-top-right-radius: 20px;
+        border-radius: 16px;
+      }
+
+      .table thead th {
+        color: white;
+        background-color: transparent; /* Remove individual background colors */
+        border-radius: 0; /* Reset any radius applied */
+        padding-left: 3px; /* Adjust horizontal padding as needed */
+        padding-right: 3px;
+        text-align: center; /* Center the divs if desired */
+        border: none;
+        padding: 4px 20px;
+        font-size: 13px;
+      }
+
+      .table thead tr {
+        color: white;
+        font-weight: bold;
+        text-align: left;
+      }
+
+      .table thead tr:first-child {
+        background-color: #bd9609; /* Yellow background color */
+        border-top-left-radius: 13px; /* Set the top-left radius */
+        border-top-right-radius: 13px; /* Set the top-right radius */
+      }
+
+      .table thead th:first-child {
+        border-top-left-radius: 13px; /* Set the top-left radius for the first th */
+        border-bottom-left-radius: 13px; /* Set the top-left radius for the first th */
+      }
+
+      .table thead th:last-child {
+        border-top-right-radius: 13px; /* Set the top-right radius for the last th */
+        border-bottom-right-radius: 13px;
+      }
+
+      .table-responsive {
+        /* your existing styles */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        margin-top: -10px;
+      }
+
+      .table tbody td {
+        vertical-align: middle;
+        border-right: 1px solid #e1e1e1;
+        font-size: small;
+        padding-top: 10px 8px;
+      }
+
+      .table tbody tr {
+        border-bottom: 1px solid #e1e1e1; /* Add borders between rows */
+      }
+
+      .table tbody tr:nth-child(odd) {
+        background-color: #ffff;
+      }
+
+      .table tbody tr:nth-child(even) {
+        background-color: #f1f1f1; /* Light gray for even rows */
+      }
+
+      .table-responsive .table thead tr th .header-background {
+        background-color: #bd9609 !important; /* Yellow background color */
+        display: inline-block !important; /* Allows us to set a width */
+        border-radius: 5px !important; /* Adjusted for a slightly rounded corner */
+        padding: 4px 20px;
+      }
+
+      table thead th:nth-child(8) {
+        width: 20%; /* Adjust the width as needed */
+      }
+
+      /* CSS to target the cells of the Action column */
+      .table tbody td:nth-child(8) {
+        width: 20%; /* Should match the header width */
+      }
+
+      table thead th:nth-child(5) {
+        width: 10%; /* Adjust the width as needed */
+      }
+
+      /* CSS to target the cells of the Action column */
+      .table tbody td:nth-child(5) {
+        width: 10%; /* Should match the header width */
+      }
+
+      .btn-approve,
+      .btn-reject {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+        margin-right: 0.25rem;
+        border-radius: 16px;
+        font-weight: bolder;
+        width: 45%;
+      }
+
+      .btn-approve {
+        background-color: #123f6d !important;
+        color: white;
+      }
+
+      .btn-reject {
+        background-color: #9c4d05;
+        color: white;
+      }
+
+      .btn:hover {
+        color: white;
+        text-decoration: underline;
+        transition: text-decoration 0.2s ease;
+      }
+
+      .number {
+        color: #9c4d05;
+      }
+
+      .number:hover {
+        color: #9c4d05;
+        text-decoration: underline;
+        transition: text-decoration 0.2s ease;
+      }
+
+      .table tbody tr td:last-child {
+        border-right: none; /* Remove the right border from the last column */
+      }
+
+      .table tbody tr:last-child {
+        border-bottom: none; /* Remove the bottom border from the last row */
+      }
+
+      .search-container {
+        margin-bottom: 5px; /* Space between search bar and table */
+        text-align: center;
+      }
+
+      #searchInput {
+        width: 100%; /* Full-width input */
+        padding: 1px; /* Some padding inside the search box */
+        border: 1px solid #ddd; /* A subtle border */
+        border-radius: 16px; /* Rounded corners */
+        text-align: center;
+        margin-left: -20px;
+      }
+
+      .table-caption-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fff; /* Match the table's background color */
+        margin-top: 10px;
+        margin-bottom: 0;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); /* Match the table's box shadow */
+        padding: 10px; /* Same padding as your table cells */
+        border-top-right-radius: 10px; /* Match the table's border-radius */
+        border-top-left-radius: 10px;
+      }
+
+      .table-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333; /* Adapt to your design */
+        /* No further styling needed unless you want something specific */
+      }
+
+      .input-group-text {
+        background-color: transparent; /* To match the design of the search bar */
+        border-left: none; /* To avoid double borders where the input and button meet */
+        border-color: #ffffff; /* Same color as the input border */
+      }
+    </style>
+  </head>
+  <body onload="loadVisitorInfo()">
+    <div class="col-12">
+      <div class="container-fluid">
+        <!-- Main content -->
+        <main role="main" class="col-md-9 col-lg-12 px-4">
+          <div
+            class="header"
+            style="
+              font-size: 50px;
+              color: white;
+              border-bottom: 0.8px solid #99a9b9;
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+            "
+          >
+            <span style="font-weight: bold">Visitor Record</span>
+
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn bg-transparent">
+                <a
+                  class="btn"
+                  type=""
+                  style="font-size: 45px; margin-left: 30px"
+                >
+                  <i class="bi bi-box-arrow-left"></i>
+                </a>
+              </button>
+            </form>
+            <a
+              class="btn"
+              href="{% url 'adminDashboard' %}"
+              style="font-size: 45px"
+              ><i class="bi bi-gear"></i
+            ></a>
+            <span id="time-display">3:45 PM</span>
+          </div>
+        </main>
+      </div>
+    </div>
+    <!-- visitor list -->
+    <div class="col-12 pe-3" style="margin-left: 1rem">
+      <!-- Visit Requests Table -->
+      <div class="col-12" style="margin-left: 1rem">
+        <!-- Visit Requests and Search Input -->
+        <div class="table-caption-container">
+          <div
+            class="table-title"
+            style="
+              color: #9c4d05;
+              border-top-left-radius: 10px;
+              border-top-right-radius: 10px;
+              padding-left: 30px;
+            "
+          >
+            List of All Visitors in All Locations
+          </div>
+
+          <span class="input-group-text" id="basic-addon1">
+            <i class="bi bi-search"></i>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search name..."
+              id="searchInput"
+              aria-label="Search"
+              aria-describedby="basic-addon1"
+            />
+          </span>
+          <div class="search-container" style="text-align: center">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="btn-group">
+                  <button
+                    type="button"
+                    class="btn dropdown-toggle"
+                    style="
+                      background-color: white;
+                      color: #707070;
+                      border: 0.6px solid #b6b6b6;
+                      border-radius: 10px;
+                      padding-left: 20px;
+                    "
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Filter:All
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Partner Library</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Alumni</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Students</a>
+                    <!-- Add more categories as needed -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table class="table-responsive">
+          <table
+            class="table"
+            style="
+              border-bottom-right-radius: 10px;
+              border-bottom-left-radius: 10px;
+            "
+          >
+            <thead class="thead">
+              <tr>
+                <th><div class="header-background">Visitor No.</div></th>
+
+                <th><div class="header-background">Surname</div></th>
+                <th><div class="header-background">First Name</div></th>
+                <th><div class="header-background">Visitor Type</div></th>
+
+                <th><div class="header-background">Email</div></th>
+                <th><div class="header-background">Affiliation</div></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for v in visitors %}
+              <tr>
+                <td>
+                  {% if v.visitorType == 'PartnerLibrary' %}
+                  <!--  -->
+                  {% for pl in PartnerLibraries %}
+                  <!--  -->
+                  {% if pl.plVisitorID == v.visitorID %}
+                  <div
+                    class="number check-i"
+                    data-bs-toggle="modal"
+                    data-bs-target="#checkVisitorModal"
+                    data-visitor="{{ v }}"
+                    data-visitor-type="{{ pl }}"
+                    data-visitor-type-word="pl"
+                    style="font-weight: bold; color: #9c4d05"
+                  >
+                    {{ v.visitorID }}
+                  </div>
+                  {% endif %} {% endfor %}{% endif %}
+                  <!--  -->
+                  {% if v.visitorType == 'NonAteneoAffiliated' %}
+                  <!--  -->
+                  {% for naa in NonAteneoAffiliateds %}
+                  <!--  -->
+                  {% if naa.naaVisitorID == v.visitorID %}
+                  <div
+                    class="number check-i"
+                    data-bs-toggle="modal"
+                    data-bs-target="#checkVisitorModal"
+                    data-visitor="{{ v }}"
+                    data-visitor-type="{{ naa }}"
+                    data-visitor-type-word="naa"
+                    style="font-weight: bold; color: #9c4d05"
+                  >
+                    {{ v.visitorID }}
+                  </div>
+                  {% endif %} {% endfor %} {% endif %}
+                  <!--  -->
+                  {% if v.visitorType == "AteneoAffiliated" %}
+                  <!--  -->
+                  {% for aa in AteneoAffiliateds %}
+                  <!--  -->
+                  {% if aa.aaVisitorID == v.visitorID %}
+                  <div
+                    class="number check-i"
+                    data-bs-toggle="modal"
+                    data-bs-target="#checkVisitorModal"
+                    data-visitor="{{ v }}"
+                    data-visitor-type="{{ aa }}"
+                    data-visitor-type-word="naa"
+                    style="font-weight: bold; color: #9c4d05"
+                  >
+                    {{ v.visitorID }}
+                  </div>
+                  {% endif %} {% endfor %} {% endif %}
+                </td>
+
+                <td>{{ v.lastName }}</td>
+                <td>{{ v.firstName }}</td>
+                <td>{{ v.visitorType }}</td>
+                <td>{{ v.visitorEmail }}</td>
+                <td>{{ v.affiliation }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </table>
+        <!-- Check Visitor Modal / partnerLib-->
+        <div
+          class="modal fade"
+          id="checkVisitorModal"
+          tabindex="-1"
+          aria-labelledby="checkVisitorModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="checkVisitorModalLabel">
+                  <p>
+                    Visitor Information
+                    <br />
+                  </p>
+                </h1>
+
+                <button
+                  type="button"
+                  class="btn-close align-left"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <p id="user-info">
+                  Visitor ID: <span class="fw-bold" id="visitorInfo0"></span>
+                  <br />
+                  Last Name: <span class="fw-bold" id="visitorInfo1"></span>
+                  <br />
+                  First Name: <span class="fw-bold" id="visitorInfo2"></span>
+                  <br />
+                  Middle Name: <span class="fw-bold" id="visitorInfo3"></span>
+                  <br />
+                  Visitor Email:
+                  <span class="fw-bold" id="visitorInfo4"></span>
+                  <br />
+                  ID Number:
+                  <span class="fw-bold" id="visitorInfo5"></span>
+                  <br />
+                  Visitor Type:
+                  <span class="fw-bold" id="visitorInfo6"></span>
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary edit-i"
+                  data-bs-dismiss="modal"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editModal"
+                  data-visitor-set="{{ visitorJSON }}"
+                  data-visitor-pa="{{ PartnerLibrariesJSON }}"
+                  data-visitor-naa="{{ NonAteneoAffiliatedsJSON }}"
+                  data-visitor-aa="{{ AteneoAffiliatedsJSON }}"
+                >
+                  Edit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end Modal -->
+        <!-- edit Modal -->
+        <div
+          class="modal fade"
+          id="editModal"
+          tabindex="-1"
+          aria-labelledby="editModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editModalLabel">
+                  <p>
+                    Edit Visitor Info
+                    <br />
+                  </p>
+                </h1>
+
+                <button
+                  type="button"
+                  class="btn-close align-left"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <form
+                id="editVisitorForm"
+                method="POST"
+                action="{% url 'edit_visitor' pk=0 %}"
+              >
+                {% csrf_token %}
+                <div class="modal-body">
+                  <div id="editVisitorInfo"></div>
+                </div>
+                <div class="modal-footer">
+                  <!-- add action -->
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button type="button submit" class="btn btn-primary">
+                    Edit Visitor Info
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- end modal -->
+      </div>
+    </div>
+    <script>
+      function loadVisitorInfo() {
+        var blankContainer = document.getElementById("userName");
+        blankContainer.innerHTML =
+          "{{ userInfo.accountType }}, {{ userLocation }}";
+      }
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+        function updateTime() {
+          var now = new Date();
+          var hours = now.getHours();
+          var minutes = now.getMinutes();
+          var ampm = hours >= 12 ? "PM" : "AM";
+          hours = hours % 12;
+          hours = hours ? hours : 12; // the hour '0' should be '12'
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          var strTime = hours + ":" + minutes + " " + ampm;
+          document.getElementById("time-display").innerHTML = strTime;
+        }
+        updateTime();
+        setInterval(updateTime, 1000); // use setInterval instead of setTimeout
+      });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $(".approve-i").click(function () {
+          var visitorID = $(this).data("visitor-pk");
+          var visitorLast = $(this).data("visitor-last");
+          var visitorFirst = $(this).data("visitor-first");
+          var visitorEmail = $(this).data("visitor-email");
+          var form = document.getElementById("updateVisitorForm");
+          form.action = "{% url 'approve_visitor' pk=0 %}".replace(
+            "0",
+            visitorID
+          );
+          $("#visitorLast").text(visitorLast);
+          $("#visitorFirst").text(visitorFirst);
+          $("#visitorEmail").text(visitorEmail);
+          $("#visitorID").text(visitorID);
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+        $(".disapprove-i").click(function () {
+          var visitorDisID = $(this).data("visitor-pk");
+          var visitorDisLast = $(this).data("visitor-last");
+          var visitorDisFirst = $(this).data("visitor-first");
+          var form = document.getElementById("rejectVisitorForm");
+          form.action = "{% url 'reject_visitor' pk=0 %}".replace(
+            "0",
+            visitorDisID
+          );
+          $("#visitorDisID").text(visitorDisID);
+          $("#visitorDisLast").text(visitorDisLast);
+          $("#visitorDisFirst").text(visitorDisFirst);
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+        $(".check-i").click(function () {
+          var visitorCheck = $(this).data("visitor");
+          const visitorInfo = visitorCheck.split(",");
+
+          var visitorTypeCheck = $(this).data("visitor-type");
+          const visitorTypeInfo = visitorTypeCheck.split(",");
+
+          for (var i = 0; i < visitorInfo.length; i++) {
+            $("#visitorInfo" + i).text(visitorInfo[i]);
+          }
+
+          var PartnerLibrary = [
+            "Librarian Name",
+            "Requestor Name",
+            "Requestor Email",
+            "Representative Name",
+            "Representative Email",
+            "Representative ID",
+          ];
+          var NonAteneoAffiliated = [
+            "Non-Ateneo Affiliated Type",
+            "Name of Companions",
+            "Referral Letter",
+            "Payment Confirmation",
+          ];
+          var AteneoAffiliated = [
+            "Visitor Subtype",
+            "Year Last Enrolled (Graduated for Alumni)",
+            "Alumni ID (School ID for LOA and BEU Students)",
+            "Course (Grade Level if BEU)",
+            "Semester Last Enrolled (for LOA)",
+            "Payment Confirmation",
+          ];
+          // console.log(visitorTypeInfo);
+          for (var i = 1; i < visitorTypeInfo.length; i++) {
+            deleteDiv = document.getElementById("visitorTypeInfo" + i);
+            if (deleteDiv) {
+              deleteDiv.remove();
+            }
+            var newDiv = document.createElement("div");
+            var userInfoElement = document.getElementById("user-info");
+            var existingElement = document.getElementById(
+              "visitorTypeInfo" + i
+            );
+            if (!existingElement) {
+              if (visitorInfo[6] == "PartnerLibrary") {
+                newDiv.innerHTML =
+                  PartnerLibrary[i - 1] +
+                  ": " +
+                  "<strong>" +
+                  visitorTypeInfo[i] +
+                  "</strong>";
+                userInfoElement.appendChild(newDiv);
+                newDiv.id = "visitorTypeInfo" + i;
+              } else if (visitorInfo[6] == "NonAteneoAffiliated") {
+                deleteDiv = document.getElementById("visitorTypeInfo" + 5);
+                if (deleteDiv) {
+                  deleteDiv.remove();
+                }
+                deleteDiv = document.getElementById("visitorTypeInfo" + 6);
+                if (deleteDiv) {
+                  deleteDiv.remove();
+                }
+                if (
+                  NonAteneoAffiliated[i - 1] == "Referral Letter" ||
+                  NonAteneoAffiliated[i - 1] == "Payment Confirmation"
+                ) {
+                  newDiv.innerHTML =
+                    NonAteneoAffiliated[i - 1] +
+                    ": " +
+                    "<a href='" +
+                    "/media/" +
+                    visitorTypeInfo[i].trim() +
+                    "' target='_blank'>" +
+                    "View Picture";
+                  ("</a>");
+                  //
+                  userInfoElement.appendChild(newDiv);
+                  newDiv.id = "visitorTypeInfo" + i;
+                } else {
+                  newDiv.innerHTML =
+                    NonAteneoAffiliated[i - 1] +
+                    ": " +
+                    "<strong>" +
+                    visitorTypeInfo[i] +
+                    "</strong>";
+                  userInfoElement.appendChild(newDiv);
+                  newDiv.id = "visitorTypeInfo" + i;
+                }
+              } else if (visitorInfo[6] == "AteneoAffiliated") {
+                if (
+                  AteneoAffiliated[i - 1] ==
+                    "Alumni ID (School ID for LOA and BEU Students)" ||
+                  AteneoAffiliated[i - 1] == "Payment Confirmation"
+                ) {
+                  newDiv.innerHTML =
+                    AteneoAffiliated[i - 1] +
+                    ": " +
+                    "<a href='" +
+                    "/media/" +
+                    visitorTypeInfo[i].trim() +
+                    "' target='_blank'>" +
+                    "View Picture" +
+                    "</a>";
+                  //
+                  userInfoElement.appendChild(newDiv);
+                  newDiv.id = "visitorTypeInfo" + i;
+                } else {
+                  newDiv.innerHTML =
+                    AteneoAffiliated[i - 1] +
+                    ": " +
+                    "<strong>" +
+                    visitorTypeInfo[i] +
+                    "</strong>";
+                  userInfoElement.appendChild(newDiv);
+                  newDiv.id = "visitorTypeInfo" + i;
+                }
+              }
+            }
+          }
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+        $(".edit-i").click(function () {
+          var visitorDisRequestID = $(this).data("visitor-set");
+          var PartnerLibraries = $(this).data("visitor-pa");
+          var NonAteneoAffiliateds = $(this).data("visitor-naa");
+          var AteneoAffiliateds = $(this).data("visitor-aa");
+
+          var visitorPK = document.getElementById("visitorInfo" + 0).innerText;
+          for (var i = 0; i < visitorDisRequestID.length; i++) {
+            if (visitorDisRequestID[i].pk == visitorPK) {
+              deleteDiv = document.getElementById("visitorEditInfo");
+              if (deleteDiv) {
+                deleteDiv.remove();
+              }
+              var editVisitorInfo = document.getElementById("editVisitorInfo");
+              var newDiv = document.createElement("div");
+              var form = document.getElementById("editVisitorForm");
+              form.action = "{% url 'edit_visitor' pk=0 %}".replace(
+                "0",
+                visitorPK
+              );
+              newDiv.innerHTML =
+                "Visitor ID: " +
+                visitorDisRequestID[i].pk +
+                "<br />" +
+                "Last Name: " +
+                "<input className='form-control' name='lastName' value='" +
+                visitorDisRequestID[i].fields.lastName +
+                "' />" +
+                "<br />" +
+                "First Name: " +
+                "<input className='form-control' name='firstName' value='" +
+                visitorDisRequestID[i].fields.firstName +
+                "' />" +
+                "<br />" +
+                "Middle Name: " +
+                "<input className='form-control' name='middleName' value='" +
+                visitorDisRequestID[i].fields.middleName +
+                "' />" +
+                "<br />" +
+                "Visitor Email: " +
+                "<input className='form-control' name='visitorEmail' value='" +
+                visitorDisRequestID[i].fields.visitorEmail +
+                "' />" +
+                "<br />" +
+                "ID Number: " +
+                "<input className='form-control' name='idNumber' value='" +
+                visitorDisRequestID[i].fields.idNumber +
+                "' />" +
+                "<br />" +
+                "Visitor Type: " +
+                visitorDisRequestID[i].fields.visitorType;
+            }
+          }
+
+          for (var j = 0; j < PartnerLibraries.length; j++) {
+            if (
+              PartnerLibraries[j].pk == visitorPK &&
+              visitorDisRequestID[visitorPK - 1].fields.visitorType ==
+                "PartnerLibrary"
+            ) {
+              newDiv.innerHTML +=
+                "<br />" +
+                "Librarian Name: " +
+                "<input className='form-control' name='librarianName' value='" +
+                PartnerLibraries[j].fields.librarianName +
+                "' />" +
+                "<br />" +
+                "Requestor Name: " +
+                "<input className='form-control' name='requestorName' value='" +
+                PartnerLibraries[j].fields.requestorName +
+                "' />" +
+                "<br />" +
+                "Requestor Email: " +
+                "<input className='form-control' name='requestorEmail' value='" +
+                PartnerLibraries[j].fields.requestorEmail +
+                "' />" +
+                "<br />" +
+                "Representative Name: " +
+                "<input className='form-control' name='representativeName' value='" +
+                PartnerLibraries[j].fields.representativeName +
+                "' />" +
+                "<br />" +
+                "Representative Email: " +
+                "<input className='form-control' name='representativeEmail' value='" +
+                PartnerLibraries[j].fields.representativeEmail +
+                "' />" +
+                "<br />" +
+                "Representative ID: " +
+                "<input className='form-control' name='representativeID' value='" +
+                PartnerLibraries[j].fields.representativeID +
+                "' />";
+            }
+          }
+
+          for (var k = 0; k < NonAteneoAffiliateds.length; k++) {
+            if (
+              NonAteneoAffiliateds[k].pk == visitorPK &&
+              visitorDisRequestID[visitorPK - 1].fields.visitorType ==
+                "NonAteneoAffiliated"
+            ) {
+              console.log(NonAteneoAffiliateds[k]);
+              newDiv.innerHTML +=
+                "<br />" +
+                "Non-Ateneo Affiliated Type: " +
+                "<input className='form-control' name='naaType' value='" +
+                NonAteneoAffiliateds[k].fields.naaType +
+                "' />" +
+                "<br />" +
+                "Name of Companions: " +
+                "<input className='form-control' name='naaCompanions' value='" +
+                NonAteneoAffiliateds[k].fields.naaCompanions +
+                "' />" +
+                "<br />" +
+                "Referral Letter: " +
+                "<a href='" +
+                "/media/" +
+                NonAteneoAffiliateds[k].fields.naaInvitation.trim() +
+                "' target='_blank'>" +
+                "View Picture" +
+                "</a>" +
+                "<br />" +
+                "Payment Confirmation: " +
+                "<a href='" +
+                "/media/" +
+                NonAteneoAffiliateds[k].fields.naaPaymentConfirmation.trim() +
+                "' target='_blank'>" +
+                "View Picture" +
+                "</a>";
+            }
+          }
+          console.log(AteneoAffiliateds);
+          for (var l = 0; l < AteneoAffiliateds.length; l++) {
+            if (
+              AteneoAffiliateds[l].pk == visitorPK &&
+              visitorDisRequestID[visitorPK - 1].fields.visitorType ==
+                "AteneoAffiliated"
+            ) {
+              console.log(AteneoAffiliateds[l]);
+              newDiv.innerHTML +=
+                "<br />" +
+                "Visitor Subtype: " +
+                "<input className='form-control' name='aaType' value='" +
+                AteneoAffiliateds[l].fields.aaType +
+                "' />" +
+                "<br />" +
+                "Year Last Enrolled (Graduated for Alumni): " +
+                "<input className='form-control' name='aaYear' value='" +
+                AteneoAffiliateds[l].fields.aaYear +
+                "' />" +
+                "<br />" +
+                "Alumni ID (School ID for LOA and BEU Students): " +
+                "<a href='" +
+                "/media/" +
+                AteneoAffiliateds[l].fields.aaIDPhoto.trim() +
+                "' target='_blank'>" +
+                "View Picture" +
+                "</a>" +
+                "<br />" +
+                "Course (Grade Level if BEU): " +
+                "<input className='form-control' name='aaCourse' value='" +
+                AteneoAffiliateds[l].fields.aaCourse +
+                "' />" +
+                "<br />" +
+                "Semester Last Enrolled (for LOA): " +
+                "<input className='form-control' name='aaLastSem' value='" +
+                AteneoAffiliateds[l].fields.aaLastSem +
+                "' />" +
+                "<br />" +
+                "Payment Confirmation: " +
+                "<a href='" +
+                "/media/" +
+                AteneoAffiliateds[l].fields.aaPaymentConfirmation.trim() +
+                "' target='_blank'>" +
+                "View Picture" +
+                "</a>";
+            }
+          }
+          editVisitorInfo.appendChild(newDiv);
+          newDiv.id = "visitorEditInfo";
+        });
+      });
+    </script>
+  </body>
+</html>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'RizalLibrary/empty_visitors_input.html' %} {% block content %}
+<!--                                        forms                                  -->
+
+<div
+  class="container rounded-3 p-3 mb-3"
+  style="background-color: rgb(243 243 243); width: 90%"
+>
+  <!-- vertical divider / form color-->
+  <div class="border-start border-end border-3 p-4">
+    <p class="fs-5 fw-bold">
+      Request was successfully submitted! Please wait for the approval
+      notification via email. The confirmation process takes around 1-3 days.
+    </p>
+
+    <!-- horizontal divider -->
+    <div class="border-bottom border-3 mb-3 rounded"></div>
+    <!-- back and submit button -->
+    <div class="d-flex justify-content-end">
+      <a
+        type="button"
+        class="btn btn-warning submitbackbtn text-white"
+        href="{% url 'visitor_start_page' %}"
+      >
+        Go back to homepage
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

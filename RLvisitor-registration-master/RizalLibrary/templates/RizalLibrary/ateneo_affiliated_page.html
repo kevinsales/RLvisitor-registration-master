@@ -1,0 +1,87 @@
+{% extends 'RizalLibrary/empty_visitors_input.html' %} {% block content %}
+
+<form method="POST" action="" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <div
+    class="container rounded-3 p-3 mb-3"
+    style="background-color: rgb(243 243 243); width: 90%"
+  >
+    <!-- vertical divider / form color-->
+    <div class="border-start border-end border-3 p-4">
+      <!-- Headings -->
+      <p class="fs-2 fw-semibold mb-0">Ateneo Affiliated</p>
+      <p class="fs-5 fw-normal fst-italic">
+        Kindly answer all the required fields. (All fields are required unless
+        stated)
+      </p>
+
+      <!-- horizontal divider -->
+      <div class="border-bottom border-3 mb-3 rounded"></div>
+
+      <!-- input padding -->
+      <div class="offset-md-2">
+        <!-- Text input-->
+        <div>
+          <p class="fs-5 fw-normal">Visitor Subtype:</p>
+          <div class="col-md-9">{{ form.aaType }}</div>
+        </div>
+        <!-- for multi-inputs -->
+        <div class="row">
+          <div class="mb-4 col-md-4">
+            <div class="mb-3">
+              <p class="fs-5 fw-small">
+                Year Last Enrolled (Graduated for Alumni):
+              </p>
+              <div class="col-md-9">{{ form.aaYear }}</div>
+              <i>e.g. 2024</i>
+            </div>
+          </div>
+          <div class="mb-4 col-md-4 offset-md-1">
+            <p class="fs-5 fw-small">Semester Last Enrolled (for LOA):</p>
+            <div class="col-md-9">{{ form.aaLastSem }}</div>
+            <i>e.g. 2nd Sem</i>
+            <div class="mb-4"></div>
+          </div>
+        </div>
+        <!-- end  multi-inputs row -->
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Course (Grade Level if BEU)</p>
+          <div class="col-md-9">{{ form.aaCourse }}</div>
+          <i>e.g. BS Management Information Systems</i>
+        </div>
+
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">
+            Alumni ID (School ID for LOA and BEU Students)
+          </p>
+          <div class="col-md-9">{{ form.aaIDPhoto }}</div>
+          <i>Only PNG, PDF, and JPEG files are accepted</i>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Payment Confirmation</p>
+          <div class="col-md-9">{{ form.aaPaymentConfirmation }}</div>
+          <i>Only PNG, PDF, and JPEG files are accepted</i>
+        </div>
+      </div>
+
+      <!-- back and submit button -->
+      <div>
+        <a
+          type="button"
+          class="btn btn-outline-warning px-4"
+          href="{% url 'upload_visitor_info' %}"
+        >
+          Back
+        </a>
+        <button
+          type="submit"
+          class="btn btn-warning float-end submitbackbtn text-white"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

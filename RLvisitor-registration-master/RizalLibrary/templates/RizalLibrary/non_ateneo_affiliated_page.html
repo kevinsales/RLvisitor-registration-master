@@ -1,0 +1,66 @@
+{% extends 'RizalLibrary/empty_visitors_input.html' %} {% block content %}
+
+<form method="POST" action="" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <div
+    class="container rounded-3 p-3 mb-3"
+    style="background-color: rgb(243 243 243); width: 90%"
+  >
+    <!-- <h2>
+      {{ request.session.VisitorID }} Just for dev purpose - current visitor ID
+    </h2> -->
+    <!-- vertical divider / form color-->
+    <div class="border-start border-end border-3 p-4">
+      <!-- Headings -->
+      <p class="fs-2 fw-semibold mb-0">Non-Ateneo Affiliated</p>
+      <p class="fs-5 fw-normal fst-italic">
+        Kindly answer all the required fields. (All fields are required unless
+        stated)
+      </p>
+
+      <!-- horizontal divider -->
+      <div class="border-bottom border-3 mb-3 rounded"></div>
+
+      <!-- input padding -->
+      <div class="offset-md-2">
+        <!-- Text input-->
+        <div>
+          <p class="fs-5 fw-normal">Visitor Subtype:</p>
+          <div class="col-md-9">{{ form.naaType }}</div>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Name of Companions:</p>
+          <div class="col-md-9">{{ form.naaCompanions }}</div>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Payment Confirmation:</p>
+          <div class="col-md-9">{{ form.naaPaymentConfirmation }}</div>
+          <i>Only PNG, PDF, and JPEG files are accepted</i>
+        </div>
+        <div class="mb-4">
+          <p class="fs-5 fw-normal">Referral letter</p>
+          <div class="col-md-9">{{ form.naaInvitation }}</div>
+          <i>Only PNG, PDF, and JPEG files are accepted</i>
+        </div>
+      </div>
+      <!-- back and submit button -->
+      <div>
+        <a
+          type="button"
+          class="btn btn-outline-warning px-4"
+          href="{% url 'upload_visitor_info' %}"
+        >
+          Back
+        </a>
+        <button
+          type="submit"
+          class="btn btn-warning float-end submitbackbtn text-white"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}
